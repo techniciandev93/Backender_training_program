@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, validator
 
 
 class Product(BaseModel):
@@ -10,6 +10,12 @@ class User(BaseModel):
     name: str
     age: int
     products: list[Product]
+
+    @validator('age')
+    def check_age(cls, age):
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError('Возраст должен быть положительным целым числом')
+        return age
 
 
 if __name__ == '__main__':
